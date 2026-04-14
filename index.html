@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sorry Babe 💙</title>
+    <title>💙</title>
     <style>
         * {
             margin: 0;
@@ -447,7 +447,7 @@
                 <img src="mad.jpeg" alt="Mad">
             </div>
             <div class="button-container">
-                <button class="btn btn-yes btn-yes-small swift-move" id="yesBtnSwift" onmouseover="moveYesButtonSwift(this)" onclick="nextScene(9)">YES</button>
+                <button class="btn btn-yes btn-yes-small" onclick="nextScene(9)">YES</button>
                 <button class="btn btn-no btn-no-big" onclick="nextScene(7)">NO</button>
             </div>
         </div>
@@ -521,24 +521,6 @@
             if (sceneNumber === 10) {
                 createConfetti();
             }
-        }
-
-        // Move YES button swiftly on hover in Scene 6 - almost impossible to click
-        function moveYesButtonSwift(button) {
-            const container = button.parentElement;
-            const containerRect = container.getBoundingClientRect();
-            
-            // Random position within container with more margin
-            const maxX = containerRect.width - button.offsetWidth - 30;
-            const maxY = containerRect.height - button.offsetHeight - 30;
-            
-            const randomX = Math.random() * maxX + 15;
-            const randomY = Math.random() * maxY + 15;
-            
-            button.style.position = 'absolute';
-            button.style.left = randomX + 'px';
-            button.style.top = randomY + 'px';
-            button.classList.add('avoid');
         }
 
         // Create confetti animation
