@@ -1,1 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorry Babe 💙</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated background particles */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            from {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            to {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+            position: relative;
+            width: 90%;
+            max-width: 700px;
+        }
+
+        .scene {
+            display: none;
+            animation: fadeIn 0.8s ease-in-out;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .scene.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+        }
+
+        .image-container {
+            margin: 30px auto;
+            width: 400px;
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .image-container:hover img {
+            transform: scale(1.05);
+        }
+
+        .button-container {
+            margin-top: 30px;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
+            min-height: 60px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            font-size: 1.6rem;
+            padding: 18px 50px;
+            box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+            animation: pulse 2s infinite;
+            z-index: 10;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 4px 25px rgba(245, 87, 108, 0.6);
+                transform: scale(1.05);
+            }
+            100% {
+                box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+                transform: scale(1);
+            }
+        }
+
+        .btn-yes:hover {
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 8px 25px rgba(245, 87, 108, 0.7);
+        }
+
+        .btn-no {
+            background: linear-gradient(135deg, #4b4b4b 0%, #2c2c2c 100%);
+            color: white;
+            font-size: 0.9rem;
+            padding: 10px 25px;
+            position: relative;
+            transition: all 0.05s ease;
+            z-index: 5;
+        }
+
+        .btn-no:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-no.swift-move {
+            transition: all 0.02s ease;
+        }
+
+        /* Size variations */
+        .btn-yes-small {
+            font-size: 0.9rem;
+            padding: 10px 25px;
+            animation: none;
+        }
+
+        .btn-yes-small:hover {
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        .btn-no-big {
+            font-size: 1.6rem;
+            padding: 18px 50px;
+            box-shadow: 0 4px 15px rgba(75, 75, 75, 0.4);
+            animation: pulse-dark 2s infinite;
+        }
+
+        @keyframes pulse-dark {
+            0% {
+                box-shadow: 0 4px 15px rgba(75, 75, 75, 0.4);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 4px 25px rgba(75, 75, 75, 0.6);
+                transform: scale(1.05);
+            }
+            100% {
+                box-shadow: 0 4px 15px rgba(75, 75, 75, 0.4);
+                transform: scale(1);
+            }
+        }
+
+        .btn-no-big:hover {
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 8px 25px rgba(75, 75, 75, 0.7);
+        }
+
+        /* Floating hearts animation */
+        .heart {
+            position: absolute;
+            color: #f5576c;
+            font-size: 20px;
+            animation: floatHeart 3s ease-in-out infinite;
+            opacity: 0;
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(0) scale(0);
+                opacity: 0;
+            }
+            15% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .image-container {
+                width: 300px;
+                height: 300px;
+            }
+
+            .btn {
+                padding: 10px 25px;
+                font-size: 1rem;
+            }
+
+            .btn-yes {
+                font-size: 1.4rem;
+                padding: 15px 40px;
+            }
+
+            .btn-no-big {
+                font-size: 1.4rem;
+                padding: 15px 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .image-container {
+                width: 250px;
+                height: 250px;
+            }
+
+            .scene {
+                padding: 30px 15px;
+            }
+
+            .btn-yes {
+                font-size: 1.2rem;
+                padding: 12px 30px;
+            }
+
+            .btn-no-big {
+                font-size: 1.2rem;
+                padding: 12px 30px;
+            }
+        }
+
+        /* Special effects for final scene */
+        .final-message {
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px #f5576c, 0 0 20px #f5576c, 0 0 30px #f5576c;
+            }
+            to {
+                text-shadow: 0 0 20px #f093fb, 0 0 30px #f093fb, 0 0 40px #f093fb;
+            }
+        }
+
+        /* Celebration animation */
+        .celebration {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #f5576c;
+            animation: confettiFall 3s linear infinite;
+        }
+
+        @keyframes confettiFall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated background particles -->
+    <div class="particles" id="particles"></div>
+
+    <div class="container">
+        <!-- Scene 1: Intro -->
+        <div class="scene active" id="scene1">
+            <div class="image-container">
+                <img src="babe pic1.jpeg" alt="Hey babe">
+            </div>
+            <div class="button-container">
+                <button class="btn btn-primary" onclick="nextScene(2)">Next</button>
+            </div>
+        </div>
+
+        <!-- Scene 2: Apology -->
+        <div class="scene" id="scene2">
+            <h1>Well.. I might owe you an apology</h1>
+            <div class="image-container">
+                <img src="apology pic2.jpeg" alt="Sorry">
+            </div>
+            <div class="button-container">
+                <button class="btn btn-primary" onclick="nextScene(3)">Continue</button>
+            </div>
+        </div>
+
+        <!-- Scene 3: Question -->
+        <div class="scene" id="scene3">
+            <h1>Will you forgive me?</h1>
+            <div class="image-container">
+                <img src="forgive pic3.jpeg" alt="Forgive me">
+            </div>
+            <div class="button-container">
+                <button class="btn btn-yes" onclick="nextScene(10)">YES</button>
+                <button class="btn btn-no" onclick="nextScene(4)">NO</button>
+            </div>
+        </div>
+
+        <!-- Scene 4: Seriously?! -->
+        <div class="scene" id="scene4">
+            <h1>Seriously?!</h1>
+            <div class="image-container">
+                <img src="wait pic4.jpeg" alt="Seriously">
+            </div>
+            <div class="button-container">
+                <button class="btn btn-yes btn-yes-small" onclick="nextScene(5)">YES</button>
+                <button class="btn btn-no btn-no-big" onclick="nextScene(7)">NO</button>
+            </div>
+        </div>
+
+        <!-- Scene 5: Slap -->
+        <div class="scene" id="scene5">
+            <div class="image-container">
+                <img src="slap pic5.jpeg" alt="Slap">
+            </div>
+            <div class="button-container">
+                <button class="btn btn-primary" onclick="nextScene(6)">Continue</button>
+            </div>
+        </div>
+
+        <!-- Scene 6: Still mad? -->
+        <div class="scene" id="scene6">
+            <h1>Are you still mad?</h1>
+            <div class="image-container">
+                <img src="mad.jpeg" alt="Mad">
+            </div>
+            <div class="button-container">
+                <button class="btn btn-yes btn-yes-small swift-move" id="yesBtnSwift" onmouseover="moveYesButtonSwift(this)" onclick="nextScene(9)">YES</button>
+                <button class="btn btn-no btn-no-big" onclick="nextScene(7)">NO</button>
+            </div>
+        </div>
+
+        <!-- Scene 7: Irresistible -->
+        <div class="scene" id="scene7">
+            <h1>I knew it! I'm basically irresistible, let's be real.</h1>
+            <div class="image-container">
+                <img src="yey pic7.jpeg" alt="Irresistible">
+            </div>
+            <div class="button-container">
+                <button class="btn btn-primary" onclick="nextScene(8)">Continue</button>
+            </div>
+        </div>
+
+        <!-- Scene 8: Are we good now? -->
+        <div class="scene" id="scene8">
+            <h1>So.. are we good now?</h1>
+            <div class="image-container">
+                <img src="okay pic8.jpeg" alt="Are we good">
+            </div>
+            <div class="button-container">
+                <button class="btn btn-yes" onclick="nextScene(10)">YES</button>
+                <button class="btn btn-no" onclick="nextScene(9)">NO</button>
+            </div>
+        </div>
+
+        <!-- Scene 9: Hate -->
+        <div class="scene" id="scene9">
+            <div class="image-container">
+                <img src="hate pic9.jpeg" alt="Hate">
+            </div>
+            <div class="button-container">
+                <button class="btn btn-no" onclick="nextScene(10)">NO</button>
+                <button class="btn btn-no" onclick="nextScene(10)">NO</button>
+            </div>
+        </div>
+
+        <!-- Scene 10: Final -->
+        <div class="scene" id="scene10">
+            <h1 class="final-message">Yey! I miss you : <</h1>
+            <div class="image-container">
+                <img src="final.jpeg" alt="Final">
+            </div>
+            <div class="celebration" id="celebration"></div>
+        </div>
+    </div>
+
+    <script>
+        // Create background particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Simple scene navigation
+        function nextScene(sceneNumber) {
+            console.log('Going to scene', sceneNumber);
+            const scenes = document.querySelectorAll('.scene');
+            scenes.forEach(scene => scene.classList.remove('active'));
+            document.getElementById(`scene${sceneNumber}`).classList.add('active');
+            
+            // Add special effects for certain scenes
+            if (sceneNumber === 10) {
+                createConfetti();
+            }
+        }
+
+        // Move YES button swiftly on hover in Scene 6 - almost impossible to click
+        function moveYesButtonSwift(button) {
+            const container = button.parentElement;
+            const containerRect = container.getBoundingClientRect();
+            
+            // Random position within container with more margin
+            const maxX = containerRect.width - button.offsetWidth - 30;
+            const maxY = containerRect.height - button.offsetHeight - 30;
+            
+            const randomX = Math.random() * maxX + 15;
+            const randomY = Math.random() * maxY + 15;
+            
+            button.style.position = 'absolute';
+            button.style.left = randomX + 'px';
+            button.style.top = randomY + 'px';
+            button.classList.add('avoid');
+        }
+
+        // Create confetti animation
+        function createConfetti() {
+            const celebration = document.getElementById('celebration');
+            const colors = ['#f5576c', '#f093fb', '#667eea', '#764ba2', '#4facfe'];
+            
+            // Clear any existing confetti
+            celebration.innerHTML = '';
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.animationDuration = (3 + Math.random() * 2) + 's';
+                celebration.appendChild(confetti);
+            }
+        }
+
+        // Initialize particles on load
+        window.addEventListener('load', () => {
+            createParticles();
+        });
+
+        // Add some extra interactivity
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add ripple effect to buttons
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    ripple.classList.add('ripple');
+                    
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => ripple.remove(), 600);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
